@@ -73,7 +73,13 @@ public class VentanaUsuarioOpciones extends JFrame {
 	}
 	private JButton getBtConsultarEnvio() {
 		if (btConsultarEnvio == null) {
-			btConsultarEnvio = new JButton("New button");
+			btConsultarEnvio = new JButton("Consultar mis envios");
+			btConsultarEnvio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new VentanaUsuarioConsulta(usuario).setVisible(true);
+				}
+			});
+			btConsultarEnvio.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		}
 		return btConsultarEnvio;
 	}

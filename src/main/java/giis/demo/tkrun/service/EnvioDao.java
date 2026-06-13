@@ -96,6 +96,9 @@ public class EnvioDao {
                     envio.setOrigen(rs.getString("origen"));
                     envio.setDestino(rs.getString("destino"));
                     envio.setPesoInicial(rs.getDouble("peso_inicial"));
+                    envio.setPesoReal(rs.getDouble("peso_real"));
+                    envio.setDanado(rs.getInt("dañado"));
+                    envio.setObservaciones(rs.getString("observaciones"));
                     envio.setEstado(rs.getString("estado"));
                     envio.setNumIntentosEntrega(rs.getInt("num_intentos_entrega"));
                     envio.setFecha(rs.getString("fecha"));
@@ -166,7 +169,7 @@ public class EnvioDao {
     }
 	
 	public boolean registrarInspeccion(EnvioDto envio) {
-        String updateEnvio = "UPDATE Envios SET peso_real = ?, dañado = ?, observaciones = ? WHERE id_envio = ?";
+        String updateEnvio = "UPDATE Envios SET peso_real = ?, dañado = ?, observaciones = ?, estado = ? WHERE id_envio = ?";
         String insertSeguimiento = "INSERT INTO Seguimiento (id_envio, estado, fecha_hora, ubicacion) VALUES (?, ?, ?, ?)";
         
         String fechaHoraActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -179,7 +182,8 @@ public class EnvioDao {
                 psUpdate.setDouble(1, envio.getPesoReal());
                 psUpdate.setInt(2, envio.getDanado());
                 psUpdate.setString(3, envio.getObservaciones());
-                psUpdate.setInt(4, envio.getIdEnvio());
+                psUpdate.setString(4, envio.getEstado());
+                psUpdate.setInt(5, envio.getIdEnvio());
                 psUpdate.executeUpdate();
             }
             
@@ -201,5 +205,22 @@ public class EnvioDao {
             e.printStackTrace();
             return false;
         }
+    }
+	
+	public String obtenerUltimaFechaSeguimiento(int idEnvio) {
+        String sql = "SELECT fecha_hora FROM Seguimiento WHERE id_envio = ? ORDER BY id_seguimiento DESC LIMIT 1";
+        
+        try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idEnvio);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("fecha_hora");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Fecha no disponible";
     }
 }

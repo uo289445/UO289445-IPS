@@ -142,6 +142,11 @@ public class VentanaAdminAsignacion extends JFrame {
                 return;
             }
             
+            if(!envioActual.getEstado().equals("Solicitado")) {
+            	JOptionPane.showMessageDialog(this, "El paquete no puede asignarse a un transportista", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             if (envioActual.getIdTransportista() != 0) {
                 int respuesta = JOptionPane.showConfirmDialog(this,
                         "Este envío ya tiene un transportista asignado.\n¿Desea reasignarlo a " + transportistaSeleccionado.getNombre() + "?",

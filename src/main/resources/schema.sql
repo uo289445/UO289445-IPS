@@ -3,7 +3,6 @@ PRAGMA foreign_keys = ON;
 DROP TABLE IF EXISTS Usuarios;
 DROP TABLE IF EXISTS Envios;
 DROP TABLE IF EXISTS Tarifas;
-DROP TABLE IF EXISTS Estados_envio;
 DROP TABLE IF EXISTS Transportistas;
 DROP TABLE IF EXISTS Seguimiento;
 
@@ -39,11 +38,6 @@ CREATE TABLE Tarifas (
 	peso_min DECIMAL(8,2) NOT NULL,
 	peso_max DECIMAL(8,2) NOT NULL,
 	precio REAL NOT NULL
-);
-
-CREATE TABLE Estados_envio (
-	id_estado INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre_estado TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE Transportistas (

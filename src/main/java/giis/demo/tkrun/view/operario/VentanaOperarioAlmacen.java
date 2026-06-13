@@ -162,6 +162,11 @@ public class VentanaOperarioAlmacen extends JFrame {
                 JOptionPane.showMessageDialog(this, "No se ha encontrado el envío " + idEnvio, "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
+            if(!envio.getEstado().contains("En almacén")) {
+            	JOptionPane.showMessageDialog(this, "El paquete no se encuentra en el almacén.", "Paquete no disponible", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
             double margenError = 0.5;
             double diferencia = Math.abs(envio.getPesoInicial() - pesoBascula);
@@ -179,10 +184,11 @@ public class VentanaOperarioAlmacen extends JFrame {
                 String obs = getTxObservaciones().getText().trim();
                 envio.setObservaciones(obs);
                 
-                envio.setEstado("En almacén - " + (obs.isEmpty() ? "Sin detalles" : obs));
+                envio.setEstado("En almacén" + (obs.isEmpty() ? " - Sin detalles" : " - " + obs));
             } else {
                 envio.setDanado(0);
                 envio.setObservaciones("");
+                envio.setEstado("En almacén");
             }
 
             boolean exito = dao.registrarInspeccion(envio);

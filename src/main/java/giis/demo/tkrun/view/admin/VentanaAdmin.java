@@ -4,8 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import giis.demo.tkrun.view.usuario.VentanaUsuarioOpciones;
-
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -22,7 +20,7 @@ public class VentanaAdmin extends JFrame {
 	private JLabel lbTitulo;
 	private JPanel pnCentral;
 	private JButton btAsignación;
-	private JButton btnNewButton_1;
+	private JButton btFallidas;
 
 	/**
 	 * Create the frame.
@@ -54,7 +52,7 @@ public class VentanaAdmin extends JFrame {
 			pnCentral = new JPanel();
 			pnCentral.setLayout(new GridLayout(2, 1, 10, 10));
 			pnCentral.add(getBtAsignación());
-			pnCentral.add(getBtnNewButton_1());
+			pnCentral.add(getBtFallidas());
 		}
 		return pnCentral;
 	}
@@ -70,11 +68,16 @@ public class VentanaAdmin extends JFrame {
 		}
 		return btAsignación;
 	}
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("New button");
-			btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	private JButton getBtFallidas() {
+		if (btFallidas == null) {
+			btFallidas = new JButton("Entregas fallidas");
+			btFallidas.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new VentanaAdminEntregasFallidas().setVisible(true);
+				}
+			});
+			btFallidas.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		}
-		return btnNewButton_1;
+		return btFallidas;
 	}
 }

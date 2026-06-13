@@ -11,6 +11,7 @@ public class UsuarioDto {
 		super();
 		this.idUsuario = idUsuario;
 		this.nombre = nombre;
+		this.email = email;
 		this.telefono = telefono;
 		this.direccion = direccion;
 	}

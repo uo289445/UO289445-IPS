@@ -223,4 +223,63 @@ public class EnvioDao {
         }
         return "Fecha no disponible";
     }
+	
+	public List<EnvioDto> obtenerEntregasPendientes(int idTransportista) {
+        List<EnvioDto> lista = new ArrayList<>();
+        String sql = "SELECT id_envio, id_usuario, destino, num_intentos_entrega FROM Envios WHERE id_transportista = ? AND estado = 'En reparto'";
+        
+        try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idTransportista);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    EnvioDto envio = new EnvioDto();
+                    envio.setIdEnvio(rs.getInt("id_envio"));
+                    envio.setIdUsuario(rs.getInt("id_usuario"));
+                    envio.setDestino(rs.getString("destino"));
+                    envio.setNumIntentosEntrega(rs.getInt("num_intentos_entrega"));
+                    lista.add(envio);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+	
+	public boolean registrarAusencia(EnvioDto envio) {
+        String updateEnvio = "UPDATE Envios SET estado = ?, num_intentos_entrega = ?, fecha = ?, ubicacion_actual = ? WHERE id_envio = ?";
+        String insertSeguimiento = "INSERT INTO Seguimiento (id_envio, estado, fecha_hora, ubicacion) VALUES (?, ?, ?, ?)";
+        
+        String nuevoEstado = "Entrega fallida";
+        String fechaHoraActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        int nuevosIntentos = envio.getNumIntentosEntrega() + 1;
+        
+        try (Connection cn = db.getConnection()) {
+            cn.setAutoCommit(false); 
+            
+            try (PreparedStatement psUpdate = cn.prepareStatement(updateEnvio)) {
+                psUpdate.setString(1, nuevoEstado);
+                psUpdate.setInt(2, nuevosIntentos);
+                psUpdate.setString(3, fechaHoraActual);
+                psUpdate.setString(4, "Almacén Central");
+                psUpdate.setInt(5, envio.getIdEnvio());
+                psUpdate.executeUpdate();
+            }
+            
+            try (PreparedStatement psInsert = cn.prepareStatement(insertSeguimiento)) {
+                psInsert.setInt(1, envio.getIdEnvio());
+                psInsert.setString(2, nuevoEstado);
+                psInsert.setString(3, fechaHoraActual);
+                psInsert.setString(4, envio.getDestino());
+                psInsert.executeUpdate();
+            }
+            
+            cn.commit();
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

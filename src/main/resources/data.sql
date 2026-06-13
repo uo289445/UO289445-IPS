@@ -12,6 +12,9 @@ INSERT INTO Envios (id_usuario, id_transportista, origen, destino, peso_inicial,
 INSERT INTO Envios (id_usuario, origen, destino, peso_inicial, estado, num_intentos_entrega, fecha, ubicacion_actual) VALUES
 	(1, 'a', 'b', 3.5, 'Solicitado', 0, '2026-06-13 12:00:00', 'a');
 
+INSERT INTO Envios (id_usuario, id_transportista, origen, destino, peso_inicial, peso_real, dañado, observaciones, estado, num_intentos_entrega, fecha, ubicacion_actual) 
+VALUES (1, 1, 'Calle Origen 12', 'Calle Destino 45, Oviedo', 2.5, 2.5, 0, '', 'En reparto', 0, '2026-06-14 09:00:00', 'Vehículo: Furgoneta 01 - Carlos Pérez');
+
 DELETE FROM Tarifas;
 INSERT INTO Tarifas (peso_min, peso_max, precio) VALUES
 	(0, 2.00, 4.50),

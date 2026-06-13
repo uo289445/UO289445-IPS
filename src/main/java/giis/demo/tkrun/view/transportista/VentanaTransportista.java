@@ -116,7 +116,7 @@ public class VentanaTransportista extends JFrame {
             TransportistaDto t = dao.buscarPorId(idTransportista);
 
             if (t != null) {
-                new VentanaTransportistaRuta(t).setVisible(true);
+                new VentanaTransportistaOpciones(t).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "No se encuentra ningún transportista con ese ID.", "Error", JOptionPane.ERROR_MESSAGE);
             }

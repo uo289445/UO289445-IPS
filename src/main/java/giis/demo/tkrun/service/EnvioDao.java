@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,5 +128,40 @@ public class EnvioDao {
             e.printStackTrace();
         }
         return lista;
+    }
+	
+	public boolean confirmarRecogida(int idEnvio, String nombreTransportista) {
+        String updateEnvio = "UPDATE Envios SET estado = ?, ubicacion_actual = ? WHERE id_envio = ?";
+        String insertSeguimiento = "INSERT INTO Seguimiento (id_envio, estado, fecha_hora, ubicacion) VALUES (?, ?, ?, ?)";
+        
+        String nuevoEstado = "En tránsito";
+        String ubicacionVehiculo = "Vehículo: " + nombreTransportista;
+        String fechaHoraActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        
+        try (Connection cn = db.getConnection()) {
+            cn.setAutoCommit(false); 
+            
+            try (PreparedStatement psUpdate = cn.prepareStatement(updateEnvio)) {
+                psUpdate.setString(1, nuevoEstado);
+                psUpdate.setString(2, ubicacionVehiculo);
+                psUpdate.setInt(3, idEnvio);
+                psUpdate.executeUpdate();
+            }
+            
+            try (PreparedStatement psInsert = cn.prepareStatement(insertSeguimiento)) {
+                psInsert.setInt(1, idEnvio);
+                psInsert.setString(2, nuevoEstado);
+                psInsert.setString(3, fechaHoraActual);
+                psInsert.setString(4, ubicacionVehiculo);
+                psInsert.executeUpdate();
+            }
+            
+            cn.commit();
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

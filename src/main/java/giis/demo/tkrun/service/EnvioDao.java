@@ -164,4 +164,42 @@ public class EnvioDao {
             return false;
         }
     }
+	
+	public boolean registrarInspeccion(EnvioDto envio) {
+        String updateEnvio = "UPDATE Envios SET peso_real = ?, dañado = ?, observaciones = ? WHERE id_envio = ?";
+        String insertSeguimiento = "INSERT INTO Seguimiento (id_envio, estado, fecha_hora, ubicacion) VALUES (?, ?, ?, ?)";
+        
+        String fechaHoraActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String ubicacion = "Almacén Central";
+        
+        try (Connection cn = db.getConnection()) {
+            cn.setAutoCommit(false); 
+            
+            try (PreparedStatement psUpdate = cn.prepareStatement(updateEnvio)) {
+                psUpdate.setDouble(1, envio.getPesoReal());
+                psUpdate.setInt(2, envio.getDanado());
+                psUpdate.setString(3, envio.getObservaciones());
+                psUpdate.setInt(4, envio.getIdEnvio());
+                psUpdate.executeUpdate();
+            }
+            
+            try (PreparedStatement psInsert = cn.prepareStatement(insertSeguimiento)) {
+                psInsert.setInt(1, envio.getIdEnvio());
+                
+                String estadoHistorial = envio.getDanado() == 1 ? envio.getEstado() : "En almacén - Inspección superada";
+                
+                psInsert.setString(2, estadoHistorial);
+                psInsert.setString(3, fechaHoraActual);
+                psInsert.setString(4, ubicacion);
+                psInsert.executeUpdate();
+            }
+            
+            cn.commit();
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

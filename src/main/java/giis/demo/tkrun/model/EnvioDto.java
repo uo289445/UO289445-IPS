@@ -7,6 +7,9 @@ public class EnvioDto {
     private String origen;
     private String destino;
     private double pesoInicial;
+    private double pesoReal;
+    private int danado;
+    private String observaciones;
     private String estado;
     private int numIntentosEntrega;
     private String fecha;
@@ -33,6 +36,15 @@ public class EnvioDto {
 
     public double getPesoInicial() { return pesoInicial; }
     public void setPesoInicial(double pesoInicial) { this.pesoInicial = pesoInicial; }
+    
+    public double getPesoReal() { return pesoReal; }
+    public void setPesoReal(double pesoReal) { this.pesoReal = pesoReal; }
+
+    public int getDanado() { return danado; }
+    public void setDanado(int danado) { this.danado = danado; }
+
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }

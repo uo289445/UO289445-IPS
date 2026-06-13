@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import giis.demo.tkrun.view.admin.VentanaAdmin;
+import giis.demo.tkrun.view.operario.VentanaOperarioAlmacen;
 import giis.demo.tkrun.view.transportista.VentanaTransportista;
 import giis.demo.tkrun.view.usuario.VentanaUsuario;
 
@@ -26,6 +27,7 @@ public class VentanaInicio extends JFrame {
 	private JButton btnUsuario;
 	private JButton btnTransportista;
 	private JButton btAdmin;
+	private JButton btOperario;
 
 	/**
 	 * Create the frame.
@@ -50,6 +52,7 @@ public class VentanaInicio extends JFrame {
 			panel.add(getBtnUsuario());
 			panel.add(getBtnTransportista());
 			panel.add(getBtAdmin());
+			panel.add(getBtOperario());
 		}
 		return panel;
 	}
@@ -99,5 +102,18 @@ public class VentanaInicio extends JFrame {
 			btAdmin.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		}
 		return btAdmin;
+	}
+	private JButton getBtOperario() {
+		if (btOperario == null) {
+			btOperario = new JButton("Entrar como operario de almacén");
+			btOperario.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					VentanaOperarioAlmacen vO = new VentanaOperarioAlmacen();
+					vO.setVisible(true);
+				}
+			});
+			btOperario.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		}
+		return btOperario;
 	}
 }

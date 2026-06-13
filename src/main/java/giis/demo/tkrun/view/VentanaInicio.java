@@ -22,6 +22,7 @@ public class VentanaInicio extends JFrame {
 	private JPanel panel;
 	private JLabel lbTitulo;
 	private JButton btnUsuario;
+	private JButton btnTransportista;
 
 	/**
 	 * Create the frame.
@@ -44,6 +45,7 @@ public class VentanaInicio extends JFrame {
 			panel.setLayout(new GridLayout(5, 1, 10, 10));
 			panel.add(getLbTitulo());
 			panel.add(getBtnUsuario());
+			panel.add(getBtnTransportista());
 		}
 		return panel;
 	}
@@ -67,5 +69,17 @@ public class VentanaInicio extends JFrame {
 			btnUsuario.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		}
 		return btnUsuario;
+	}
+	private JButton getBtnTransportista() {
+		if (btnTransportista == null) {
+			btnTransportista = new JButton("Entrar como transportista");
+			btnTransportista.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+			btnTransportista.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		}
+		return btnTransportista;
 	}
 }

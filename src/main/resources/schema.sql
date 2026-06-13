@@ -38,3 +38,8 @@ CREATE TABLE Estados_envio (
 	id_estado INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre_estado TEXT UNIQUE NOT NULL
 );
+
+CREATE TABLE transportistas (
+    id_transportista INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+);

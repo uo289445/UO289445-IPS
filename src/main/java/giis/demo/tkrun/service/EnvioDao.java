@@ -61,4 +61,48 @@ public class EnvioDao {
         }
         return -1.0;
 	}
+	
+	public boolean asignarTransportista(int idEnvio, int idTransportista) {
+        String sql = "UPDATE Envios SET id_transportista = ? WHERE id_envio = ?";
+        
+        try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idTransportista);
+            ps.setInt(2, idEnvio);
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+	
+	public EnvioDto obtenerEnvioPorId(int idEnvio) {
+        String sql = "SELECT * FROM Envios WHERE id_envio = ?";
+        
+        try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idEnvio);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    EnvioDto envio = new EnvioDto();
+                    envio.setIdEnvio(rs.getInt("id_envio"));
+                    envio.setIdUsuario(rs.getInt("id_usuario"));
+                    envio.setIdTransportista(rs.getInt("id_transportista")); 
+                    envio.setOrigen(rs.getString("origen"));
+                    envio.setDestino(rs.getString("destino"));
+                    envio.setPesoInicial(rs.getDouble("peso_inicial"));
+                    envio.setEstado(rs.getString("estado"));
+                    envio.setNumIntentosEntrega(rs.getInt("num_intentos_entrega"));
+                    envio.setFecha(rs.getString("fecha"));
+                    envio.setUbicacionActual(rs.getString("ubicacion_actual"));
+                    return envio;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

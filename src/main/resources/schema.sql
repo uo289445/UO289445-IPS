@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS Usuarios;
 DROP TABLE IF EXISTS Envios;
 DROP TABLE IF EXISTS Tarifas;
 DROP TABLE IF EXISTS Estados_envio;
+DROP TABLE IF EXISTS Transportistas;
 
 CREATE TABLE Usuarios (
     id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,6 +18,7 @@ CREATE TABLE Usuarios (
 CREATE TABLE Envios (
 	id_envio INTEGER PRIMARY KEY AUTOINCREMENT,
 	id_usuario INTEGER NOT NULL,
+	id_transportista INTEGER,
 	origen TEXT NOT NULL,
 	destino TEXT NOT NULL,
 	peso_inicial REAL NOT NULL,
@@ -25,6 +27,7 @@ CREATE TABLE Envios (
 	fecha TEXT,
 	ubicacion_actual TEXT NOT NULL,
 	FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)
+	FOREIGN KEY (id_transportista) REFERENCES Transportistas(id_transportista)
 );
 
 CREATE TABLE Tarifas (
@@ -39,7 +42,7 @@ CREATE TABLE Estados_envio (
     nombre_estado TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE transportistas (
+CREATE TABLE Transportistas (
     id_transportista INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL
 );

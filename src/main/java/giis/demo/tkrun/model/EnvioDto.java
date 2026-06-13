@@ -2,10 +2,11 @@ package giis.demo.tkrun.model;
 
 public class EnvioDto {
 	private int idEnvio;
-    private int idUsuario; // Usamos String para que encaje con tu UsuarioDto
+    private int idUsuario;
+    private int idTransportista;
     private String origen;
     private String destino;
-    private double pesoInicial; // Es mejor usar double para los pesos
+    private double pesoInicial;
     private String estado;
     private int numIntentosEntrega;
     private String fecha;
@@ -20,6 +21,9 @@ public class EnvioDto {
 
     public int getIdUsuario() { return idUsuario; }
     public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
+    
+    public int getIdTransportista() { return idTransportista; }
+    public void setIdTransportista(int idTransportista) { this.idTransportista = idTransportista; }
 
     public String getOrigen() { return origen; }
     public void setOrigen(String origen) { this.origen = origen; }

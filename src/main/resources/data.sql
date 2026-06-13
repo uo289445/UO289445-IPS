@@ -24,4 +24,10 @@ INSERT INTO Tarifas (peso_min, peso_max, precio) VALUES
 
 DELETE FROM Envios;
 INSERT INTO Envios (id_usuario, origen, destino, peso_inicial, estado, num_intentos_entrega, fecha, ubicacion_actual) VALUES
-	(1, 'a', 'b', 3.5, 'Solicitado', 0, '2026-06-13 12:00:00', 'a')
+	(1, 'a', 'b', 3.5, 'Solicitado', 0, '2026-06-13 12:00:00', 'a');
+	
+DELETE FROM Transportistas;
+INSERT INTO Transportistas (nombre) VALUES
+	('Furgoneta 01 - Carlos Pérez'),
+	('Furgoneta 02 - María Gómez'),
+	('Camión 01 - Juan López');

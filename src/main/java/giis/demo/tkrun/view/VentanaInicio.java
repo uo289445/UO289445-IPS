@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import giis.demo.tkrun.view.admin.VentanaAdmin;
 import giis.demo.tkrun.view.usuario.VentanaUsuario;
 
 import java.awt.BorderLayout;
@@ -23,6 +24,7 @@ public class VentanaInicio extends JFrame {
 	private JLabel lbTitulo;
 	private JButton btnUsuario;
 	private JButton btnTransportista;
+	private JButton btAdmin;
 
 	/**
 	 * Create the frame.
@@ -46,6 +48,7 @@ public class VentanaInicio extends JFrame {
 			panel.add(getLbTitulo());
 			panel.add(getBtnUsuario());
 			panel.add(getBtnTransportista());
+			panel.add(getBtAdmin());
 		}
 		return panel;
 	}
@@ -81,5 +84,18 @@ public class VentanaInicio extends JFrame {
 			btnTransportista.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		}
 		return btnTransportista;
+	}
+	private JButton getBtAdmin() {
+		if (btAdmin == null) {
+			btAdmin = new JButton("Entrar como administrador");
+			btAdmin.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					VentanaAdmin vA = new VentanaAdmin();
+					vA.setVisible(true);
+				}
+			});
+			btAdmin.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		}
+		return btAdmin;
 	}
 }

@@ -33,4 +33,19 @@ public class TransportistaDao {
         }
         return lista;
     }
+    
+    public TransportistaDto buscarPorId(int idTransportista) {
+        String sql = "SELECT * FROM Transportistas WHERE id_transportista = ?";
+        try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idTransportista);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new TransportistaDto(rs.getInt("id_transportista"), rs.getString("nombre"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import giis.demo.tkrun.view.admin.VentanaAdmin;
+import giis.demo.tkrun.view.transportista.VentanaTransportista;
 import giis.demo.tkrun.view.usuario.VentanaUsuario;
 
 import java.awt.BorderLayout;
@@ -78,7 +79,8 @@ public class VentanaInicio extends JFrame {
 			btnTransportista = new JButton("Entrar como transportista");
 			btnTransportista.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+					VentanaTransportista vT = new VentanaTransportista();
+					vT.setVisible(true);
 				}
 			});
 			btnTransportista.setFont(new Font("Tahoma", Font.PLAIN, 12));

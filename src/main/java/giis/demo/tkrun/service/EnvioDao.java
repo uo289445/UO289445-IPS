@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import giis.demo.tkrun.model.EnvioDto;
 import giis.demo.util.Database;
@@ -29,7 +31,6 @@ public class EnvioDao {
             
             ps.executeUpdate();
             
-            // Recuperamos el ID autogenerado
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     int idGenerado = rs.getInt(1);
@@ -104,5 +105,26 @@ public class EnvioDao {
             e.printStackTrace();
         }
         return null;
+    }
+	
+	public List<EnvioDto> obtenerRecogidasPendientes(int idTransportista) {
+        List<EnvioDto> lista = new ArrayList<>();
+        String sql = "SELECT id_envio, id_usuario, origen FROM Envios WHERE id_transportista = ? AND estado = 'Solicitado'";
+        
+        try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idTransportista);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    EnvioDto envio = new EnvioDto();
+                    envio.setIdEnvio(rs.getInt("id_envio"));
+                    envio.setIdUsuario(rs.getInt("id_usuario"));
+                    envio.setOrigen(rs.getString("origen"));
+                    lista.add(envio);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }

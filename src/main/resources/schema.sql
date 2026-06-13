@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Envios;
 DROP TABLE IF EXISTS Tarifas;
 DROP TABLE IF EXISTS Estados_envio;
 DROP TABLE IF EXISTS Transportistas;
+DROP TABLE IF EXISTS Seguimiento;
 
 CREATE TABLE Usuarios (
     id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,4 +46,13 @@ CREATE TABLE Estados_envio (
 CREATE TABLE Transportistas (
     id_transportista INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL
+);
+
+CREATE TABLE Seguimiento (
+	id_seguimiento INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_envio INTEGER NOT NULL,
+    estado TEXT NOT NULL,
+    fecha_hora TEXT NOT NULL,
+    ubicacion TEXT NOT NULL,
+    FOREIGN KEY (id_envio) REFERENCES Envios(id_envio)
 );

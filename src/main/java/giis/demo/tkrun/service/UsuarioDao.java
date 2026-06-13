@@ -30,4 +30,19 @@ public class UsuarioDao {
 		return new UsuarioDto(rs.getInt("id_usuario"), rs.getString("nombre"), rs.getString("email"),
 				rs.getString("telefono"), rs.getString("direccion"));
 	}
+	
+	public UsuarioDto findById(int idUsuario) {
+		String sql = "SELECT * from Usuarios WHERE id_usuario = ? AND estado = 'activo'";
+		try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+			ps.setInt(1, idUsuario);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return mapUsuario(rs);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

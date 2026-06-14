@@ -21,6 +21,8 @@ CREATE TABLE Envios (
 	id_transportista INTEGER,
 	origen TEXT NOT NULL,
 	destino TEXT NOT NULL,
+	distancia TEXT NOT NULL,
+	tarifa REAL NOT NULL,
 	peso_inicial REAL NOT NULL,
 	peso_real REAL,
 	dañado INTEGER CHECK (dañado IN (0,1)) NOT NULL DEFAULT 0,
@@ -37,6 +39,7 @@ CREATE TABLE Tarifas (
 	id_tarifa INTEGER PRIMARY KEY AUTOINCREMENT,
 	peso_min DECIMAL(8,2) NOT NULL,
 	peso_max DECIMAL(8,2) NOT NULL,
+	distancia TEXT NOT NULL,
 	precio REAL NOT NULL
 );
 

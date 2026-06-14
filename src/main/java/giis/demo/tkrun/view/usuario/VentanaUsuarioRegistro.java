@@ -14,8 +14,9 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
@@ -32,6 +33,8 @@ public class VentanaUsuarioRegistro extends JFrame {
 	private JLabel lbPeso;
 	private JLabel lbTarifa;
 	private JTextField txDestino;
+	private JLabel lbDistancia;
+	private JComboBox<String> cbDistancia;
 	private JTextField txPeso;
 	private JTextField txTarifa;
 	private JButton btRetornar;
@@ -45,7 +48,7 @@ public class VentanaUsuarioRegistro extends JFrame {
 		setTitle("Panel del Usuario - Registro de envios");
 		this.usuario = usuario;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 526, 348);
+		setBounds(100, 100, 526, 380);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -55,6 +58,8 @@ public class VentanaUsuarioRegistro extends JFrame {
 		contentPane.add(getLbDirOrigen());
 		contentPane.add(getTxOrigen());
 		contentPane.add(getLbDirDestino());
+		contentPane.add(getLbDistancia());
+		contentPane.add(getCbDistancia());
 		contentPane.add(getLbPeso());
 		contentPane.add(getLbTarifa());
 		contentPane.add(getTxDestino());
@@ -95,17 +100,34 @@ public class VentanaUsuarioRegistro extends JFrame {
 		}
 		return lbDirDestino;
 	}
+	private JLabel getLbDistancia() {
+		if (lbDistancia == null) {
+			lbDistancia = new JLabel("Zona del envío:");
+			lbDistancia.setBounds(117, 155, 87, 20);
+		}
+		return lbDistancia;
+	}
+	private JComboBox<String> getCbDistancia() {
+		if (cbDistancia == null) {
+			cbDistancia = new JComboBox<String>();
+			cbDistancia.addItem("Local");
+			cbDistancia.addItem("Nacional");
+			cbDistancia.addItem("Internacional");
+			cbDistancia.setBounds(214, 155, 192, 20);
+		}
+		return cbDistancia;
+	}
 	private JLabel getLbPeso() {
 		if (lbPeso == null) {
 			lbPeso = new JLabel("Peso (Kg):");
-			lbPeso.setBounds(137, 174, 67, 20);
+			lbPeso.setBounds(137, 186, 67, 20);
 		}
 		return lbPeso;
 	}
 	private JLabel getLbTarifa() {
 		if (lbTarifa == null) {
 			lbTarifa = new JLabel("Tarifa del servicio calculada:");
-			lbTarifa.setBounds(49, 224, 155, 20);
+			lbTarifa.setBounds(49, 236, 155, 20);
 		}
 		return lbTarifa;
 	}
@@ -121,7 +143,7 @@ public class VentanaUsuarioRegistro extends JFrame {
 		if (txPeso == null) {
 			txPeso = new JTextField();
 			txPeso.setColumns(10);
-			txPeso.setBounds(214, 174, 192, 20);
+			txPeso.setBounds(214, 186, 192, 20);
 		}
 		return txPeso;
 	}
@@ -130,14 +152,14 @@ public class VentanaUsuarioRegistro extends JFrame {
 			txTarifa = new JTextField();
 			txTarifa.setEditable(false);
 			txTarifa.setColumns(10);
-			txTarifa.setBounds(214, 224, 192, 20);
+			txTarifa.setBounds(214, 236, 192, 20);
 		}
 		return txTarifa;
 	}
 	private JButton getBtRetornar() {
 		if (btRetornar == null) {
 			btRetornar = new JButton("Retornar");
-			btRetornar.setBounds(121, 278, 129, 22);
+			btRetornar.setBounds(122, 310, 129, 22);
 		}
 		return btRetornar;
 	}
@@ -149,7 +171,7 @@ public class VentanaUsuarioRegistro extends JFrame {
 					confirmarEnvio();
 				}
 			});
-			btConfirmar.setBounds(260, 278, 129, 22);
+			btConfirmar.setBounds(261, 310, 129, 22);
 		}
 		return btConfirmar;
 	}
@@ -157,6 +179,7 @@ public class VentanaUsuarioRegistro extends JFrame {
 	private void confirmarEnvio() {
 		String origen = getTxOrigen().getText();
 		String destino = getTxDestino().getText();
+		String distancia = getCbDistancia().getSelectedItem().toString();
 		String pesoStr = getTxPeso().getText();
 		
 		if (origen.isBlank() || destino.isBlank() || pesoStr.isBlank()) {
@@ -172,10 +195,10 @@ public class VentanaUsuarioRegistro extends JFrame {
 	        return;
 	    }
 	    
-	    double tarifa = eDao.calcularTarifa(peso);
+	    double tarifa = eDao.calcularTarifa(peso, distancia);
 	    
 	    if (tarifa < 0) {
-	        JOptionPane.showMessageDialog(this, "No se encontró una tarifa para el peso indicado.", "Error de tarifa", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(this, "No se encontró una tarifa para el peso indicado y zona indicados.", "Error de tarifa", JOptionPane.ERROR_MESSAGE);
 	        return;
 	    }
 	    
@@ -193,6 +216,8 @@ public class VentanaUsuarioRegistro extends JFrame {
 	        nuevoEnvio.setIdUsuario(this.usuario.getIdUsuario());
 	        nuevoEnvio.setOrigen(origen);
 	        nuevoEnvio.setDestino(destino);
+	        nuevoEnvio.setDistancia(distancia);
+	        nuevoEnvio.setTarifa(tarifa);
 	        nuevoEnvio.setPesoInicial(peso);
 	        nuevoEnvio.setEstado("Solicitado");
 	        nuevoEnvio.setNumIntentosEntrega(0);

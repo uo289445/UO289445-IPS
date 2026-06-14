@@ -184,7 +184,7 @@ public class VentanaOperarioAlmacen extends JFrame {
                 String obs = getTxObservaciones().getText().trim();
                 envio.setObservaciones(obs);
                 
-                envio.setEstado("En almacén" + (obs.isEmpty() ? " - Sin detalles" : " - " + obs));
+                envio.setEstado("En almacén" + (obs.isEmpty() ? " - Con desperfectos" : " - " + obs));
             } else {
                 envio.setDanado(0);
                 envio.setObservaciones("");

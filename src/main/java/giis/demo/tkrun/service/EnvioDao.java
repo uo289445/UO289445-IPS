@@ -17,19 +17,21 @@ public class EnvioDao {
 	private Database db = new Database();
 	
 	public int registrarEnvio(EnvioDto envio) {
-		String sql = "INSERT INTO Envios (id_usuario, origen, destino, peso_inicial, estado, num_intentos_entrega, fecha, ubicacion_actual) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Envios (id_usuario, origen, destino, distancia, tarifa, peso_inicial, estado, num_intentos_entrega, fecha, ubicacion_actual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection cn = db.getConnection(); 
              PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
-            ps.setInt(1, envio.getIdUsuario());
+        	ps.setInt(1, envio.getIdUsuario());
             ps.setString(2, envio.getOrigen());
             ps.setString(3, envio.getDestino());
-            ps.setDouble(4, envio.getPesoInicial());
-            ps.setString(5, envio.getEstado());
-            ps.setInt(6, envio.getNumIntentosEntrega());
-            ps.setString(7, envio.getFecha());
-            ps.setString(8, envio.getUbicacionActual());
+            ps.setString(4, envio.getDistancia());
+            ps.setDouble(5, envio.getTarifa());
+            ps.setDouble(6, envio.getPesoInicial());
+            ps.setString(7, envio.getEstado());
+            ps.setInt(8, envio.getNumIntentosEntrega());
+            ps.setString(9, envio.getFecha());
+            ps.setString(10, envio.getUbicacionActual());
             
             ps.executeUpdate();
             
@@ -47,12 +49,13 @@ public class EnvioDao {
         return -1;
 	}
 	
-	public double calcularTarifa(double peso) {
-		String sql = "SELECT precio FROM Tarifas WHERE ? >= peso_min AND ? <= peso_max";
+	public double calcularTarifa(double peso, String distancia) {
+		String sql = "SELECT precio FROM Tarifas WHERE ? >= peso_min AND ? <= peso_max AND distancia = ?";
 		
 		try (Connection cn = db.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setDouble(1, peso);
             ps.setDouble(2, peso);
+            ps.setString(3, distancia);
             
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

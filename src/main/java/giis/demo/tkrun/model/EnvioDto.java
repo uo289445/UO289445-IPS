@@ -6,6 +6,8 @@ public class EnvioDto {
     private int idTransportista;
     private String origen;
     private String destino;
+    private String distancia;
+    private double tarifa;
     private double pesoInicial;
     private double pesoReal;
     private int danado;
@@ -33,6 +35,12 @@ public class EnvioDto {
 
     public String getDestino() { return destino; }
     public void setDestino(String destino) { this.destino = destino; }
+    
+    public String getDistancia() { return distancia; }
+    public void setDistancia(String distancia) { this.distancia = distancia; }
+
+    public double getTarifa() { return tarifa; }
+    public void setTarifa(double tarifa) { this.tarifa = tarifa; }
 
     public double getPesoInicial() { return pesoInicial; }
     public void setPesoInicial(double pesoInicial) { this.pesoInicial = pesoInicial; }
